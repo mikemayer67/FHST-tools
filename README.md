@@ -6,6 +6,7 @@ This script converts a best times report exported as csv from Swimtopia into
 a simple 3 column report suitable for displaying on deck.
 
 ###Usage###
+```
 > python gen_best_times.py [-h] best_times_csv [best_times_pdf]
 
 Generate best times report from Swimtopia data
@@ -29,3 +30,4 @@ optional arguments:
 
         Click on the "Generate Report" button
         Click on the "Download CSV" button
+```
