@@ -87,15 +87,16 @@ for file in glob.glob(f"{csv_dir}/*.csv"):
 assert best_times_file, f"No best times file found in {csv_dir}"
 assert black_ribbon_file, f"No athlete report card found in {csv_dir}"
 
-cmd = [f"{csv_dir}/gen_best_times.py",best_times_file]
-subprocess.run(cmd)
-
+pdf_out = f"{csv_dir}/best_times.pdf"
+cmd = ["python3"] + [f"{csv_dir}/gen_best_times.py",best_times_file, pdf_out]
+subprocess.run(cmd,capture_output=True)
+    
 for meet,name in black_ribbon_meets.items():
     if meet == 0: continue
     name = name.lower().split(" ")
     ab = name[0]
     name = '_'.join(name[3:])
-    pdf_out = f"black_ribbons_{ab}_{name}.pdf"
-    cmd = [f"{csv_dir}/gen_black_ribbons.py",black_ribbon_file, pdf_out,"--meet",str(meet)]
-    subprocess.run(cmd)
+    pdf_out = f"{csv_dir}/black_ribbons_{ab}_{name}.pdf"
+    cmd = ["python3"] + [f"{csv_dir}/gen_black_ribbons.py",black_ribbon_file, pdf_out,"--meet",str(meet)]
+    subprocess.run(cmd,capture_output=True)
 
