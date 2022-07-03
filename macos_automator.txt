@@ -1,0 +1,7 @@
+Run AppleScript:
+  return path to me
+
+Run ShellScript: (pass input as arguments)
+  cmd=`echo $1 | sed -e 's/[^/]*$/gen_all.py/'`
+  export PYTHONPATH=/usr/local/anaconda3/lib/python3.8/site-packages
+  python3 $cmd
