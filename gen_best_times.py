@@ -9,6 +9,22 @@ import datetime
 
 from fpdf import FPDF
 
+
+############################################################
+# CSV Input File
+############################################################
+ExpectedColumns = [
+    'AgeGroup',
+    'FirstName',
+    'LastName',
+    'Age',
+    'Event',
+    'Time',
+    'ConvertedTime',
+    'ConvertedHundredths',
+    'Date',
+    'SwimMeet',
+]
 ############################################################
 # MCSL Specfic Events Data
 ############################################################
@@ -125,20 +141,11 @@ def read_data(src):
     lines = lines[1:]
 
     try:
-        assert len(header) == 10, "Best times file should have 10 columns of data"
-        expected_columns = [
-            'AgeGroup',
-            'FirstName',
-            'LastName',
-            'Age',
-            'Event',
-            'Time',
-            'ConvertedTime',
-            'ConvertedHundredths',
-            'Date',
-            'SwimMeet',
-        ]
-        for i,(found,expected) in enumerate(zip(header,expected_columns)):
+        n_expected_columns = len(ExpectedColumns)
+        assert len(header) == n_expected_columns, (
+            f"Best times file should have {n_expected_columns} columns of data"
+        )
+        for i,(found,expected) in enumerate(zip(header,ExpectedColumns)):
             assert found==expected, f"Column {i+1} should be {expected}, not {found}"
     except Exception as e:
         print(f"Sorry:: {src} does not appear to be properly formatted:\n\n {e}")

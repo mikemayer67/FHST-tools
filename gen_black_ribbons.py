@@ -9,6 +9,36 @@ import os.path
 from fpdf import FPDF
 
 ############################################################
+# CSV Input Columns
+############################################################
+
+LeadColumns = (
+    'AgeGroup',
+    'AthleteId',
+    'LastName',
+    'FirstName',
+    'LastName_FirstName',
+    'Age',
+    'EventDistance',
+    'EventStroke',
+    )
+TailColumns = (
+    'TotalResults',
+    'TotalImproved',
+    'TotalPoints',
+    'AmountImprovedSec',
+    'PercentImproved',
+    )
+MeetColumns = (
+    'Name',
+    'Result',
+    'ResultSec',
+    'Improved',
+    'Points',
+    'Date',
+    )
+
+############################################################
 # Stroke Names
 ############################################################
 
@@ -90,35 +120,9 @@ _CellPad = 1
 # Data Parsing
 ############################################################
 
-_LeadColumns = (
-    'AgeGroup',
-    'AthleteId',
-    'LastName',
-    'FirstName',
-    'LastName_FirstName',
-    'Age',
-    'EventDistance',
-    'EventStroke',
-    )
-_TailColumns = (
-    'TotalResults',
-    'TotalImproved',
-    'TotalPoints',
-    'AmountImprovedSec',
-    'PercentImproved',
-    )
-_MeetColumns = (
-    'Name',
-    'Result',
-    'ResultSec',
-    'Improved',
-    'Points',
-    'Date',
-    )
-
-_NumLeadColumns = len(_LeadColumns)
-_NumTailColumns = len(_TailColumns)
-_NumColumnsPerMeet = len(_MeetColumns)
+_NumLeadColumns = len(LeadColumns)
+_NumTailColumns = len(TailColumns)
+_NumColumnsPerMeet = len(MeetColumns)
 
 
 def read_data(src):
@@ -153,9 +157,9 @@ def read_data(src):
             f"Athlete report card file should have {_NumColumnsPerMeet} columns per meet" )
 
         expected_columns = (
-            _LeadColumns +
-            tuple( f"Meet{i+1}-{mc}" for i in range(n_meet) for mc in _MeetColumns ) +
-            _TailColumns )
+            LeadColumns +
+            tuple( f"Meet{i+1}-{mc}" for i in range(n_meet) for mc in MeetColumns ) +
+            TailColumns )
 
         for i,(found,expected) in enumerate(zip(header,expected_columns)):
             assert found==expected, (
