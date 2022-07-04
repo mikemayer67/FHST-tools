@@ -4,12 +4,14 @@ import sys
 import re
 import os.path
 import glob
-import subprocess
 
 from gen_best_times import ExpectedColumns as BestTimesColumns
+from gen_best_times import main as GenBestTimes
+
 from gen_black_ribbons import LeadColumns as BlackLeadColumns
 from gen_black_ribbons import TailColumns as BlackTailColumns
 from gen_black_ribbons import MeetColumns as BlackMeetColumns
+from gen_black_ribbons import main as GenBlackRibbons
 
 def is_best_times_file(file):
     try:
@@ -88,15 +90,13 @@ assert best_times_file, f"No best times file found in {csv_dir}"
 assert black_ribbon_file, f"No athlete report card found in {csv_dir}"
 
 pdf_out = f"{csv_dir}/best_times.pdf"
-cmd = ["python3"] + [f"{csv_dir}/gen_best_times.py",best_times_file, pdf_out]
-subprocess.run(cmd,capture_output=True)
-    
+GenBestTimes(best_times_file,pdf_out)
+
 for meet,name in black_ribbon_meets.items():
     if meet == 0: continue
     name = name.lower().split(" ")
     ab = name[0]
-    name = '_'.join(name[3:])
-    pdf_out = f"{csv_dir}/black_ribbons_{ab}_{name}.pdf"
-    cmd = ["python3"] + [f"{csv_dir}/gen_black_ribbons.py",black_ribbon_file, pdf_out,"--meet",str(meet)]
-    subprocess.run(cmd,capture_output=True)
+    team = '_'.join(name[3:])
+    pdf_out = f"{csv_dir}/black_ribbons_{ab}_{team}.pdf"
+    GenBlackRibbons(black_ribbon_file, dst=pdf_out, meet=meet)
 

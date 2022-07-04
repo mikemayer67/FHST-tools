@@ -313,11 +313,10 @@ def gen_formatted_report(data,dst):
 # Main
 ############################################################
 
-def main():
-    args = parse_args()
-    data = read_data(args.src)
+def main(src,dst):
+    data = read_data(src)
     report = gen_unformatted_report(data)
-    gen_formatted_report(report,args.dst)
+    gen_formatted_report(report,dst)
 
 def parse_args():
     epilog = """
@@ -362,5 +361,6 @@ def parse_args():
 
  
 if __name__ == "__main__":
-    main()
+    args = parse_args()
+    main(args.src,args.dst)
   

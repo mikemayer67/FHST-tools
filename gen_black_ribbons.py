@@ -335,22 +335,20 @@ def gen_formatted_labels(labels,meets,dst):
 # Main
 ############################################################
 
-def main():
-    args = parse_args()
-    meets, data = read_data(args.src)
+def main(src, *, dst=None, meet=None, show_list=False ):
+    meets, data = read_data(src)
 
-    if args.list:
+    if show_list:
         show_meets(meets)
         sys.exit(0)
 
-    if args.meet:
-        validate_selected_meet(meets,args.meet)
-        meet = args.meet
+    if meet:
+        validate_selected_meet(meets,meet)
     else:
-        meet = select_latest_meet(meets, args.src)
+        meet = select_latest_meet(meets, src)
 
     labels = gen_unformatted_labels(data,meet)
-    gen_formatted_labels(labels,meets,args.dst)
+    gen_formatted_labels(labels,meets,dst)
     
 
 def parse_args():
@@ -414,5 +412,15 @@ def parse_args():
 
  
 if __name__ == "__main__":
-    main()
+    args = parse_args()
+
+    kwargs = dict()
+    if args.dst:
+        kwargs['dst'] = args.dst
+    if args.meet:
+        kwargs['meet'] = args.meet
+    if args.list:
+        kwargs['show_list'] = args.list
+
+    main(args.src, **kwargs)
   
